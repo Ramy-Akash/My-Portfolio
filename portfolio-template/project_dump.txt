@@ -1,0 +1,975 @@
+﻿=== C:\Users\akash\OneDrive\Documents\Projects\aura-portfolio-template\portfolio-template\src\components\About.jsx ===
+import { siteConfig } from "../siteConfig.js";
+import Reveal from "./Reveal.jsx";
+import SectionHeading from "./SectionHeading.jsx";
+import SmartImage from "./SmartImage.jsx";
+
+export default function About() {
+  const { aboutHeading, aboutBio, aboutImage } = siteConfig;
+  if (!aboutBio?.length) return null;
+
+  return (
+    <section id="about" className="mx-auto max-w-6xl px-6 py-24 md:py-32 lg:px-8">
+      <SectionHeading number="01" heading="About" intro={aboutHeading} />
+      <div className="mt-14 grid items-start gap-12 md:grid-cols-[1fr_1.1fr] md:gap-16">
+        <Reveal>
+          <SmartImage
+            src={aboutImage}
+            alt={siteConfig.heroName}
+            className="aspect-[4/3] w-full rounded-2xl"
+          />
+        </Reveal>
+        <div className="space-y-6">
+          {aboutBio.map((para, i) => (
+            <Reveal key={i} delay={0.1 + i * 0.1}>
+              <p className={`leading-relaxed ${i === 0 ? "text-lg text-ink/80" : "text-ink/60"}`}>
+                {para}
+              </p>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+=== C:\Users\akash\OneDrive\Documents\Projects\aura-portfolio-template\portfolio-template\src\components\Contact.jsx ===
+import { siteConfig } from "../siteConfig.js";
+import Reveal from "./Reveal.jsx";
+import Icon from "./Icon.jsx";
+
+export default function Contact() {
+  const {
+    contactHeading,
+    contactText,
+    contactEmail,
+    contactCtaLabel,
+    location,
+    socialLinks,
+    siteName,
+    footerNote,
+  } = siteConfig;
+
+  return (
+    <footer id="contact" className="bg-ink text-paper">
+      <div className="mx-auto max-w-6xl px-6 py-24 md:py-32 lg:px-8">
+        <Reveal>
+          <p className="flex items-center gap-3 text-xs font-medium uppercase tracking-widest2 text-paper/50">
+            <span className="text-accent">05</span>
+            <span className="h-px w-10 bg-paper/20" />
+            Contact
+          </p>
+        </Reveal>
+        <Reveal delay={0.1}>
+          <h2 className="mt-6 max-w-3xl font-display text-4xl leading-tight md:text-6xl">
+            {contactHeading}
+          </h2>
+        </Reveal>
+        {contactText && (
+          <Reveal delay={0.2}>
+            <p className="mt-6 max-w-xl leading-relaxed text-paper/60">{contactText}</p>
+          </Reveal>
+        )}
+        <Reveal delay={0.3}>
+          <a
+            href={`mailto:${contactEmail}`}
+            className="group mt-10 inline-flex items-center gap-4 rounded-full bg-accent px-8 py-4 text-sm font-medium text-white transition-transform hover:scale-[1.03]"
+          >
+            <Icon name="mail" className="h-5 w-5" />
+            {contactCtaLabel || contactEmail}
+            <Icon name="arrow" className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </a>
+        </Reveal>
+
+        <div className="mt-20 flex flex-col gap-8 border-t border-paper/10 pt-10 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="font-display text-lg">
+              {siteName}
+              <span className="text-accent">.</span>
+            </p>
+            {location && <p className="mt-1 text-sm text-paper/45">{location}</p>}
+          </div>
+
+          {socialLinks?.length > 0 && (
+            <ul className="flex flex-wrap gap-3">
+              {socialLinks.map((s) => (
+                <li key={s.label}>
+                  <a
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.label}
+                    className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-paper/15 text-paper/70 transition-all hover:border-accent hover:text-accent"
+                  >
+                    <Icon name={s.icon} className="h-5 w-5" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <p className="text-xs text-paper/35">
+            Â© {new Date().getFullYear()} {siteName}. {footerNote}
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+
+=== C:\Users\akash\OneDrive\Documents\Projects\aura-portfolio-template\portfolio-template\src\components\Header.jsx ===
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { siteConfig } from "../siteConfig.js";
+
+const NAV = [
+  { label: "About", href: "#about" },
+  { label: "Services", href: "#services" },
+  { label: "Work", href: "#work" },
+  { label: "Contact", href: "#contact" },
+];
+
+export default function Header() {
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+        scrolled
+          ? "bg-paper/85 backdrop-blur-md border-b border-ink/5 py-3"
+          : "bg-transparent py-6"
+      }`}
+    >
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 lg:px-8">
+        <a href="#top" className="font-display text-xl tracking-tight">
+          {siteConfig.siteName}
+          <span className="text-accent">.</span>
+        </a>
+
+        {/* Desktop nav */}
+        <nav className="hidden items-center gap-10 md:flex">
+          {NAV.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="text-sm text-ink/60 transition-colors hover:text-ink"
+            >
+              {item.label}
+            </a>
+          ))}
+          <a
+            href={`mailto:${siteConfig.contactEmail}`}
+            className="rounded-full border border-ink/15 px-5 py-2 text-sm transition-all hover:border-accent hover:bg-accent hover:text-white"
+          >
+            {siteConfig.heroCtaLabel}
+          </a>
+        </nav>
+
+        {/* Mobile toggle */}
+        <button
+          onClick={() => setOpen(!open)}
+          aria-label="Toggle menu"
+          className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
+        >
+          <span className={`h-px w-6 bg-ink transition-transform ${open ? "translate-y-[3.5px] rotate-45" : ""}`} />
+          <span className={`h-px w-6 bg-ink transition-transform ${open ? "-translate-y-[3.5px] -rotate-45" : ""}`} />
+        </button>
+      </div>
+
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {open && (
+          <motion.nav
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden border-b border-ink/5 bg-paper/95 backdrop-blur-md md:hidden"
+          >
+            <div className="flex flex-col gap-1 px-6 py-4">
+              {NAV.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className="py-3 font-display text-2xl text-ink/80"
+                >
+                  {item.label}
+                </a>
+              ))}
+              <a
+                href={`mailto:${siteConfig.contactEmail}`}
+                className="mt-3 rounded-full bg-ink px-6 py-3 text-center text-sm text-paper"
+              >
+                {siteConfig.heroCtaLabel}
+              </a>
+            </div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
+    </header>
+  );
+}
+
+
+=== C:\Users\akash\OneDrive\Documents\Projects\aura-portfolio-template\portfolio-template\src\components\Hero.jsx ===
+import { motion } from "framer-motion";
+import { siteConfig } from "../siteConfig.js";
+import SmartImage from "./SmartImage.jsx";
+import Icon from "./Icon.jsx";
+
+const fade = (delay) => ({
+  initial: { opacity: 0, y: 28 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.8, delay, ease: [0.21, 0.6, 0.35, 1] },
+});
+
+export default function Hero() {
+  const {
+    heroKicker,
+    heroName,
+    heroTitle,
+    heroSubtitle,
+    heroCtaLabel,
+    heroSecondaryCtaLabel,
+    profilePic,
+    heroStats,
+    contactEmail,
+  } = siteConfig;
+
+  return (
+    <section id="top" className="relative overflow-hidden">
+      {/* soft accent wash */}
+      <div className="pointer-events-none absolute -top-40 right-[-10%] h-[32rem] w-[32rem] rounded-full bg-accent/10 blur-3xl" />
+
+      <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 pb-20 pt-32 md:grid-cols-[1.15fr_0.85fr] md:gap-16 md:pb-28 md:pt-44 lg:px-8">
+        <div>
+          {heroKicker && (
+            <motion.p
+              {...fade(0)}
+              className="text-xs font-medium uppercase tracking-widest2 text-ink/40"
+            >
+              {heroKicker}
+            </motion.p>
+          )}
+          <motion.h1
+            {...fade(0.1)}
+            className="mt-6 font-display text-5xl leading-[1.05] tracking-tight md:text-7xl"
+          >
+            {heroName}
+            <span className="text-accent">.</span>
+          </motion.h1>
+          <motion.p
+            {...fade(0.2)}
+            className="mt-5 font-display text-xl italic text-ink/70 md:text-2xl"
+          >
+            {heroTitle}
+          </motion.p>
+          <motion.p {...fade(0.3)} className="mt-6 max-w-xl leading-relaxed text-ink/60">
+            {heroSubtitle}
+          </motion.p>
+
+          <motion.div {...fade(0.4)} className="mt-10 flex flex-wrap items-center gap-4">
+            <a
+              href={`mailto:${contactEmail}`}
+              className="group inline-flex items-center gap-3 rounded-full bg-ink px-7 py-3.5 text-sm font-medium text-paper transition-all hover:bg-accent"
+            >
+              {heroCtaLabel}
+              <Icon name="arrow" className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </a>
+            {heroSecondaryCtaLabel && (
+              <a
+                href="#work"
+                className="inline-flex items-center gap-3 rounded-full border border-ink/15 px-7 py-3.5 text-sm transition-colors hover:border-ink"
+              >
+                {heroSecondaryCtaLabel}
+              </a>
+            )}
+          </motion.div>
+
+          {heroStats?.length > 0 && (
+            <motion.dl {...fade(0.55)} className="mt-14 flex flex-wrap gap-x-12 gap-y-6">
+              {heroStats.map((s) => (
+                <div key={s.label}>
+                  <dt className="sr-only">{s.label}</dt>
+                  <dd className="font-display text-3xl text-ink">{s.value}</dd>
+                  <dd className="mt-1 text-xs uppercase tracking-widest text-ink/40">
+                    {s.label}
+                  </dd>
+                </div>
+              ))}
+            </motion.dl>
+          )}
+        </div>
+
+        {/* Portrait */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.25, ease: [0.21, 0.6, 0.35, 1] }}
+          className="relative mx-auto w-full max-w-sm md:max-w-none"
+        >
+          <div className="absolute -inset-3 rounded-[2rem] border border-accent/30" />
+          <SmartImage
+            src={profilePic}
+            alt={heroName}
+            eager
+            className="aspect-[4/5] w-full rounded-[2rem] shadow-2xl shadow-ink/20"
+          />
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+
+=== C:\Users\akash\OneDrive\Documents\Projects\aura-portfolio-template\portfolio-template\src\components\Icon.jsx ===
+/**
+ * Minimal inline icon set â€” no icon library dependency.
+ * Referenced by name from siteConfig (services[].icon, socialLinks[].icon).
+ */
+const paths = {
+  compass: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M15.5 8.5l-2 5-5 2 2-5 5-2z" />
+    </>
+  ),
+  pen: (
+    <>
+      <path d="M12 19l7-7 3 3-7 7-3-3z" />
+      <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
+      <circle cx="11" cy="11" r="2" />
+    </>
+  ),
+  layers: (
+    <>
+      <path d="M12 2l10 6-10 6L2 8l10-6z" />
+      <path d="M2 14l10 6 10-6" />
+    </>
+  ),
+  spark: (
+    <>
+      <path d="M12 2v6M12 16v6M2 12h6M16 12h6" />
+      <path d="M5 5l4 4M15 15l4 4M19 5l-4 4M9 15l-4 4" />
+    </>
+  ),
+  grid: (
+    <>
+      <rect x="3" y="3" width="7" height="7" />
+      <rect x="14" y="3" width="7" height="7" />
+      <rect x="3" y="14" width="7" height="7" />
+      <rect x="14" y="14" width="7" height="7" />
+    </>
+  ),
+  chat: (
+    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" />
+  ),
+  linkedin: (
+    <>
+      <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z" />
+      <rect x="2" y="9" width="4" height="12" />
+      <circle cx="4" cy="4" r="2" />
+    </>
+  ),
+  behance: (
+    <>
+      <path d="M3 6h6a3 3 0 010 6H3zM3 12h7a3 3 0 010 6H3z" />
+      <path d="M15 13h7a3.5 3.5 0 00-7 0zM15 13a3.5 3.5 0 007 2" />
+      <path d="M16 7h5" />
+    </>
+  ),
+  dribbble: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M6 4.5c4.5 4 7 9 8.5 16M19.5 6.5C16 10 10 11.5 3.5 11M21 13.5c-6-1.5-11 .5-14.5 5.5" />
+    </>
+  ),
+  instagram: (
+    <>
+      <rect x="2" y="2" width="20" height="20" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
+    </>
+  ),
+  twitter: (
+    <path d="M4 4l7.5 9.5L4.5 20h2.6l5.6-5.3L17 20h3l-7.8-10L19 4h-2.6l-5 4.8L7 4H4z" />
+  ),
+  github: (
+    <path d="M9 19c-4.5 1.5-4.5-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 00-1.3-3.2 4.2 4.2 0 00-.1-3.2s-1-.3-3.4 1.3a11.5 11.5 0 00-6 0C6.6 2.8 5.6 3.1 5.6 3.1a4.2 4.2 0 00-.1 3.2A4.6 4.6 0 004.2 9.5c0 4.6 2.7 5.7 5.5 6-.5.5-.6 1-.5 2V21" />
+  ),
+  globe: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18" />
+    </>
+  ),
+  mail: (
+    <>
+      <rect x="2" y="4" width="20" height="16" rx="2" />
+      <path d="M22 6l-10 7L2 6" />
+    </>
+  ),
+  arrow: <path d="M5 12h14M13 6l6 6-6 6" />,
+};
+
+export default function Icon({ name, className = "w-5 h-5" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      {paths[name] || paths.globe}
+    </svg>
+  );
+}
+
+
+=== C:\Users\akash\OneDrive\Documents\Projects\aura-portfolio-template\portfolio-template\src\components\PortfolioGrid.jsx ===
+import { siteConfig } from "../siteConfig.js";
+import Reveal from "./Reveal.jsx";
+import SectionHeading from "./SectionHeading.jsx";
+import SmartImage from "./SmartImage.jsx";
+import Icon from "./Icon.jsx";
+
+function ProjectCard({ project }) {
+  const inner = (
+    <div className="group relative overflow-hidden rounded-2xl">
+      <SmartImage
+        src={project.image}
+        alt={project.title}
+        className="aspect-[4/3] w-full transition-transform duration-700 ease-out group-hover:scale-105"
+      />
+      {/* Hover overlay */}
+      <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-ink/85 via-ink/25 to-transparent p-6 opacity-0 transition-opacity duration-500 group-hover:opacity-100 md:p-7">
+        <div className="translate-y-3 transition-transform duration-500 group-hover:translate-y-0">
+          <p className="text-xs uppercase tracking-widest text-accent">{project.category}</p>
+          <div className="mt-1 flex items-center justify-between gap-4">
+            <h3 className="font-display text-2xl text-white">{project.title}</h3>
+            {project.url && <Icon name="arrow" className="h-5 w-5 shrink-0 text-white" />}
+          </div>
+          {project.tags?.length > 0 && (
+            <ul className="mt-3 flex flex-wrap gap-2">
+              {project.tags.map((tag) => (
+                <li
+                  key={tag}
+                  className="rounded-full border border-white/25 px-3 py-1 text-[11px] text-white/80"
+                >
+                  {tag}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+      {/* Always-visible caption on touch/small screens */}
+      <div className="mt-3 flex items-baseline justify-between md:hidden">
+        <h3 className="font-display text-lg">{project.title}</h3>
+        <p className="text-xs uppercase tracking-widest text-ink/40">{project.category}</p>
+      </div>
+    </div>
+  );
+
+  return project.url ? (
+    <a href={project.url} target="_blank" rel="noopener noreferrer" aria-label={project.title}>
+      {inner}
+    </a>
+  ) : (
+    inner
+  );
+}
+
+export default function PortfolioGrid() {
+  const { portfolioHeading, portfolioIntro, projects } = siteConfig;
+  if (!projects?.length) return null;
+
+  return (
+    <section id="work" className="mx-auto max-w-6xl px-6 py-24 md:py-32 lg:px-8">
+      <SectionHeading number="03" heading={portfolioHeading} intro={portfolioIntro} />
+      <div className="mt-16 grid gap-10 sm:grid-cols-2 md:gap-8">
+        {projects.map((project, i) => (
+          <Reveal
+            key={project.title}
+            delay={(i % 2) * 0.1}
+            className={i % 2 === 1 ? "md:mt-16" : ""}
+          >
+            <ProjectCard project={project} />
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+
+=== C:\Users\akash\OneDrive\Documents\Projects\aura-portfolio-template\portfolio-template\src\components\Reveal.jsx ===
+import { motion } from "framer-motion";
+
+/** Shared scroll-entry animation wrapper â€” subtle rise + fade. */
+export default function Reveal({ children, delay = 0, className = "", y = 24 }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.7, delay, ease: [0.21, 0.6, 0.35, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+
+=== C:\Users\akash\OneDrive\Documents\Projects\aura-portfolio-template\portfolio-template\src\components\SectionHeading.jsx ===
+import Reveal from "./Reveal.jsx";
+
+/** Consistent editorial section header: numbered kicker + display heading. */
+export default function SectionHeading({ number, heading, intro, light = false }) {
+  return (
+    <div className="max-w-3xl">
+      <Reveal>
+        <p
+          className={`flex items-center gap-3 text-xs font-medium uppercase tracking-widest2 ${
+            light ? "text-paper/50" : "text-ink/40"
+          }`}
+        >
+          <span className="text-accent">{number}</span>
+          <span className={`h-px w-10 ${light ? "bg-paper/20" : "bg-ink/15"}`} />
+          {heading}
+        </p>
+      </Reveal>
+      {intro && (
+        <Reveal delay={0.1}>
+          <h2
+            className={`mt-6 font-display text-3xl md:text-5xl leading-tight ${
+              light ? "text-paper" : "text-ink"
+            }`}
+          >
+            {intro}
+          </h2>
+        </Reveal>
+      )}
+    </div>
+  );
+}
+
+
+=== C:\Users\akash\OneDrive\Documents\Projects\aura-portfolio-template\portfolio-template\src\components\Services.jsx ===
+import { siteConfig } from "../siteConfig.js";
+import Reveal from "./Reveal.jsx";
+import SectionHeading from "./SectionHeading.jsx";
+import Icon from "./Icon.jsx";
+
+export default function Services() {
+  const { servicesHeading, servicesIntro, services } = siteConfig;
+  if (!services?.length) return null;
+
+  return (
+    <section id="services" className="bg-ink text-paper">
+      <div className="mx-auto max-w-6xl px-6 py-24 md:py-32 lg:px-8">
+        <SectionHeading number="02" heading={servicesHeading} intro={servicesIntro} light />
+        <div className="mt-16 grid gap-px overflow-hidden rounded-2xl bg-paper/10 sm:grid-cols-2 lg:grid-cols-3">
+          {services.map((s, i) => (
+            <Reveal key={s.title} delay={(i % 3) * 0.08} className="h-full">
+              <div className="group h-full bg-ink p-8 transition-colors duration-300 hover:bg-paper/[0.04] md:p-10">
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-paper/15 text-accent transition-colors group-hover:border-accent">
+                  <Icon name={s.icon} className="h-5 w-5" />
+                </span>
+                <h3 className="mt-6 font-display text-xl">{s.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-paper/55">{s.description}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+=== C:\Users\akash\OneDrive\Documents\Projects\aura-portfolio-template\portfolio-template\src\components\SmartImage.jsx ===
+import { useState } from "react";
+
+/**
+ * SmartImage â€” every image in the template renders through this component.
+ * - Accepts local paths ("/assets/photo.jpg") or full https URLs.
+ * - object-cover inside a fixed-aspect container, so ANY replacement image
+ *   of ANY dimensions looks correct instantly.
+ * - Graceful placeholder when the src is missing or fails to load.
+ */
+export default function SmartImage({ src, alt = "", className = "", eager = false }) {
+  const [failed, setFailed] = useState(false);
+
+  if (!src || failed) {
+    return (
+      <div
+        aria-label={alt}
+        className={`flex items-center justify-center bg-ink/5 text-ink/30 ${className}`}
+      >
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <circle cx="8.5" cy="8.5" r="1.5" />
+          <path d="M21 15l-5-5L5 21" />
+        </svg>
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      loading={eager ? "eager" : "lazy"}
+      onError={() => setFailed(true)}
+      className={`object-cover ${className}`}
+    />
+  );
+}
+
+
+=== C:\Users\akash\OneDrive\Documents\Projects\aura-portfolio-template\portfolio-template\src\components\Testimonials.jsx ===
+import { siteConfig } from "../siteConfig.js";
+import Reveal from "./Reveal.jsx";
+import SectionHeading from "./SectionHeading.jsx";
+import SmartImage from "./SmartImage.jsx";
+
+export default function Testimonials() {
+  const { testimonialsHeading, testimonials } = siteConfig;
+  if (!testimonials?.length) return null;
+
+  return (
+    <section id="testimonials" className="border-y border-ink/5 bg-ink/[0.02]">
+      <div className="mx-auto max-w-6xl px-6 py-24 md:py-32 lg:px-8">
+        <SectionHeading number="04" heading="Testimonials" intro={testimonialsHeading} />
+        <div className="mt-16 grid gap-8 md:grid-cols-3">
+          {testimonials.map((t, i) => (
+            <Reveal key={t.name} delay={i * 0.1} className="h-full">
+              <figure className="flex h-full flex-col rounded-2xl border border-ink/8 bg-paper p-8">
+                <span className="font-display text-5xl leading-none text-accent">â€œ</span>
+                <blockquote className="mt-3 flex-1 leading-relaxed text-ink/70">
+                  {t.quote}
+                </blockquote>
+                <figcaption className="mt-8 flex items-center gap-4">
+                  <SmartImage
+                    src={t.avatar}
+                    alt={t.name}
+                    className="h-12 w-12 rounded-full"
+                  />
+                  <div>
+                    <p className="text-sm font-medium">{t.name}</p>
+                    <p className="text-xs text-ink/45">{t.role}</p>
+                  </div>
+                </figcaption>
+              </figure>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+=== C:\Users\akash\OneDrive\Documents\Projects\aura-portfolio-template\portfolio-template\src\App.jsx ===
+import { useEffect } from "react";
+import { siteConfig } from "./siteConfig.js";
+import Header from "./components/Header.jsx";
+import Hero from "./components/Hero.jsx";
+import About from "./components/About.jsx";
+import Services from "./components/Services.jsx";
+import PortfolioGrid from "./components/PortfolioGrid.jsx";
+import Testimonials from "./components/Testimonials.jsx";
+import Contact from "./components/Contact.jsx";
+
+/** Convert "#C8A24B" â†’ "200 162 75" for Tailwind rgb(var(--x)) usage. */
+function hexToRgbChannels(hex) {
+  const h = hex.replace("#", "");
+  const full = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+  const n = parseInt(full, 16);
+  return `${(n >> 16) & 255} ${(n >> 8) & 255} ${n & 255}`;
+}
+
+export default function App() {
+  // Apply theme + meta from config so nothing is hardcoded in index.html.
+  useEffect(() => {
+    const { theme, siteName, metaDescription } = siteConfig;
+    const root = document.documentElement;
+    if (theme?.accent) root.style.setProperty("--accent", hexToRgbChannels(theme.accent));
+    if (theme?.ink) root.style.setProperty("--ink", hexToRgbChannels(theme.ink));
+    if (theme?.paper) root.style.setProperty("--paper", hexToRgbChannels(theme.paper));
+    document.title = `${siteName} â€” ${siteConfig.heroTitle}`;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta && metaDescription) meta.setAttribute("content", metaDescription);
+  }, []);
+
+  return (
+    <>
+      <Header />
+      <main>
+        <Hero />
+        <About />
+        <Services />
+        <PortfolioGrid />
+        <Testimonials />
+      </main>
+      <Contact />
+    </>
+  );
+}
+
+
+=== C:\Users\akash\OneDrive\Documents\Projects\aura-portfolio-template\portfolio-template\src\index.css ===
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Accent + palette variables are injected at runtime from siteConfig.theme
+   (see App.jsx). Fallbacks below keep the site styled even before JS runs. */
+:root {
+  --accent: 200 162 75;
+  --ink: 17 17 19;
+  --paper: 250 250 247;
+}
+
+body {
+  @apply bg-paper text-ink font-sans antialiased;
+}
+
+::selection {
+  background: rgb(var(--accent) / 0.25);
+}
+
+
+=== C:\Users\akash\OneDrive\Documents\Projects\aura-portfolio-template\portfolio-template\src\main.jsx ===
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import "./index.css";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+
+=== C:\Users\akash\OneDrive\Documents\Projects\aura-portfolio-template\portfolio-template\src\siteConfig.js ===
+/**
+ * ============================================================
+ *  SITE CONFIG â€” THE SINGLE SOURCE OF TRUTH
+ * ============================================================
+ *  Everything a client sees on this site is defined right here.
+ *  To personalize the template for a new client:
+ *
+ *    1. Edit the text values below.
+ *    2. Drop their images into  /public/assets/  and update the
+ *       image paths â€” OR paste any full https:// image URL.
+ *    3. Done. No component code ever needs to change.
+ *
+ *  Any optional section (testimonials, services, etc.) can be
+ *  hidden by simply leaving its array empty: [].
+ * ============================================================
+ */
+
+export const siteConfig = {
+  // ---------- BRAND / META ----------
+  siteName: "Jane Doe",           // Used in header wordmark + <title>
+  metaDescription:
+    "Jane Doe â€” Premium branding & identity consultant crafting timeless visual identities for ambitious companies.",
+
+  // Accent color used across buttons, links and highlights.
+  // Pick any color â€” components adapt automatically.
+  theme: {
+    accent: "#C8A24B",            // champagne gold
+    ink: "#111113",               // near-black text / dark surfaces
+    paper: "#FAFAF7",             // warm off-white background
+  },
+
+  // ---------- HERO ----------
+  heroKicker: "Front-End Developer Â· Identity Â· Strategy",
+  heroName: "Jane Doe",
+  heroTitle: "Premium Branding & Identity Consultant",
+  heroSubtitle:
+    "I help ambitious companies become unforgettable â€” through strategy-led identities, editorial design systems, and brands that feel inevitable.",
+  heroCtaLabel: "Contact Me",
+  heroSecondaryCtaLabel: "View Work",   // set to "" to hide
+  // Profile photo: local file in /public/assets or any https URL
+  profilePic:
+    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1200&auto=format&fit=crop",
+  heroStats: [
+    // Small proof points under the hero. Leave [] to hide.
+    { value: "12+", label: "Years of practice" },
+    { value: "80+", label: "Brands launched" },
+    { value: "6", label: "Design awards" },
+  ],
+
+  // ---------- ABOUT ----------
+  aboutHeading: "Design that outlives trends.",
+  aboutBio: [
+    "I'm Jane â€” an independent brand consultant based between Amsterdam and Lisbon. For over a decade I've partnered with founders, cultural institutions and venture-backed teams to build identities that carry real commercial weight: naming, strategy, visual systems and the guidelines that keep them coherent for years.",
+    "My practice is deliberately small. I take on a handful of engagements a year, work directly with decision-makers, and stay involved from the first workshop to the final launch asset. The result is work that is considered, consistent, and unmistakably yours.",
+  ],
+  aboutImage:
+    "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1600&auto=format&fit=crop",
+
+  // ---------- SERVICES ----------
+  servicesHeading: "What I do",
+  servicesIntro:
+    "Focused engagements, senior attention, no hand-offs. Every project is led personally, end to end.",
+  services: [
+    {
+      icon: "compass",           // compass | pen | layers | spark | grid | chat
+      title: "Brand Strategy",
+      description:
+        "Positioning, audience research, naming and messaging architecture â€” the thinking that makes every design decision defensible.",
+    },
+    {
+      icon: "pen",
+      title: "Visual Identity",
+      description:
+        "Logotypes, typography, color and art direction composed into a distinctive, ownable visual language.",
+    },
+    {
+      icon: "layers",
+      title: "Design Systems",
+      description:
+        "Guidelines, component libraries and templates that keep your brand coherent across every team and touchpoint.",
+    },
+    {
+      icon: "spark",
+      title: "Brand Refresh",
+      description:
+        "Evolution, not revolution â€” modernizing established brands while protecting the equity they've earned.",
+    },
+    {
+      icon: "grid",
+      title: "Packaging & Print",
+      description:
+        "Tactile brand expressions: packaging, editorial layouts and print collateral with obsessive production detail.",
+    },
+    {
+      icon: "chat",
+      title: "Advisory & Workshops",
+      description:
+        "Ongoing counsel for in-house teams â€” brand sprints, design critiques and quarterly identity audits.",
+    },
+  ],
+
+  // ---------- PORTFOLIO ----------
+  portfolioHeading: "Selected work",
+  portfolioIntro:
+    "A few recent engagements. Full case studies available on request.",
+  projects: [
+    {
+      title: "Maison Verre",
+      category: "Luxury Retail",
+      tags: ["Identity", "Packaging", "Art Direction"],
+      image:
+        "https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1600&auto=format&fit=crop",
+      url: "https://example.com",   // set to "" for no link
+    },
+    {
+      title: "Northwind Capital",
+      category: "Finance",
+      tags: ["Strategy", "Identity", "Guidelines"],
+      image:
+        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1600&auto=format&fit=crop",
+      url: "https://example.com",
+    },
+    {
+      title: "Studio Ferra",
+      category: "Architecture",
+      tags: ["Naming", "Identity", "Web Direction"],
+      image:
+        "https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=1600&auto=format&fit=crop",
+      url: "https://example.com",
+    },
+    {
+      title: "Solstice Coffee",
+      category: "F&B",
+      tags: ["Packaging", "Illustration", "Retail"],
+      image:
+        "https://images.unsplash.com/photo-1447933601403-0c6688de566e?q=80&w=1600&auto=format&fit=crop",
+      url: "https://example.com",
+    },
+    {
+      title: "Kella Skincare",
+      category: "Beauty",
+      tags: ["Identity", "Packaging", "E-commerce"],
+      image:
+        "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?q=80&w=1600&auto=format&fit=crop",
+      url: "https://example.com",
+    },
+    {
+      title: "Orbit Festival",
+      category: "Culture",
+      tags: ["Identity", "Motion", "Campaign"],
+      image:
+        "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=1600&auto=format&fit=crop",
+      url: "https://example.com",
+    },
+  ],
+
+  // ---------- TESTIMONIALS (optional â€” leave [] to hide) ----------
+  testimonialsHeading: "Kind words",
+  testimonials: [
+    {
+      quote:
+        "Jane didn't just redesign our brand â€” she rebuilt how we talk about ourselves. Eighteen months later, every hire, deck and product decision still traces back to that work.",
+      name: "Marcus Feld",
+      role: "CEO, Northwind Capital",
+      avatar:
+        "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop",
+    },
+    {
+      quote:
+        "The rare consultant who is equally sharp on strategy and craft. The identity system she delivered has survived three product launches without a single inconsistency.",
+      name: "Amira Hadid",
+      role: "Founder, Kella Skincare",
+      avatar:
+        "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=400&auto=format&fit=crop",
+    },
+    {
+      quote:
+        "Working with Jane felt like adding a world-class creative director to our leadership team for six months. Worth every cent, twice over.",
+      name: "TomÃ¡s Rivera",
+      role: "Managing Partner, Studio Ferra",
+      avatar:
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop",
+    },
+  ],
+
+  // ---------- CONTACT / FOOTER ----------
+  contactHeading: "Let's build something unforgettable.",
+  contactText:
+    "Currently booking engagements for Q1. Tell me about your project â€” I reply to every serious inquiry within 48 hours.",
+  contactEmail: "jane@janedoe.studio",
+  contactCtaLabel: "jane@janedoe.studio",
+  location: "Amsterdam Â· Lisbon Â· Remote worldwide",
+  socialLinks: [
+    // label is shown; icon: linkedin | behance | dribbble | instagram | twitter | github | globe
+    { label: "LinkedIn", icon: "linkedin", url: "https://linkedin.com/in/janedoe" },
+    { label: "Behance", icon: "behance", url: "https://behance.net/janedoe" },
+    { label: "Instagram", icon: "instagram", url: "https://instagram.com/janedoe.studio" },
+  ],
+  footerNote: "Available for select engagements worldwide.",
+};
+
+

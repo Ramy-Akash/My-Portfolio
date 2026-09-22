@@ -1,0 +1,153 @@
+/**
+ * Site configuration is the single source of truth for all portfolio content.
+ * Shared media and links live at the root; visible copy is localized by language.
+ */
+const englishContent = {
+  metaDescription: "Ramy Akash — Front-End Developer & IT Professional.",
+  heroKicker: "Front-End Developer · IT Professional · Freelancer",
+  heroName: "Ramy Akash",
+  heroTitle: "Front-End Web Developer & IT Professional",
+  heroSubtitle: "I build fast, premium web applications and custom user interfaces for digital agencies and independent professionals.",
+  heroCtaLabel: "Contact Me",
+  heroSecondaryCtaLabel: "View Work On GitHub",
+  heroStats: [],
+  aboutSectionLabel: "About",
+  aboutHeading: "Clean code. Premium design",
+  aboutBio: [
+    "I am a front-end developer based in Damascus, Syria, specializing in React, JavaScript, and responsive UI design. With a background blending front-end web development and IT network infrastructure, I bring both aesthetic precision and technical reliability to every project.",
+    "From multi-language web layouts to complex reservation dashboards, I focus on delivering clean, scalable, and visually striking digital experiences without the bloat.",
+  ],
+  servicesSectionLabel: "Services",
+  servicesHeading: "What I do",
+  servicesIntro: "Specialized front-end development focused on performance and seamless user experiences",
+  services: [
+    { icon: "grid", title: "React Development", description: "Building dynamic, single-page applications and reusable component libraries using modern React and Vite workflows." },
+    { icon: "layers", title: "Responsive UI/UX", description: "Translating Figma designs into pixel-perfect, mobile-first interfaces using Tailwind CSS and custom styling." },
+    { icon: "spark", title: "Web Optimization", description: "Refactoring legacy code, fixing UI bugs, and ensuring maximum performance and cross-browser compatibility." },
+    { icon: "pen", title: "IT Operations & Support", description: "Managing network infrastructure, troubleshooting hardware/software issues, and providing technical support to ensure smooth IT operations." },
+    { icon: "grid", title: "CCTV & Surveillance Network Management", description: "Designing and implementing comprehensive surveillance solutions with a focus on security and reliability." },
+    { icon: "chat", title: "Fast learning & collaboration", description: "Quickly adapting to new technologies and collaborating effectively with cross-functional teams to deliver high-quality solutions." },
+  ],
+  portfolioSectionLabel: "Work",
+  portfolioHeading: "Selected work",
+  portfolioIntro: "Recent layouts, concepts, and digital experiences.",
+  projects: [],
+  testimonialsSectionLabel: "Testimonials",
+  testimonialsHeading: "Kind words",
+  testimonials: [],
+  contactSectionLabel: "Contact",
+  contactHeading: "Let's build your digital presence.",
+  contactText: "Currently available for freelance front-end projects, bug fixes, and done-for-you portfolio setups.",
+  contactCtaLabel: "Email Me",
+  location: "Syria · Damascus · Remote worldwide, +963996878554",
+  socialLinks: [
+    { label: "LinkedIn", icon: "linkedin", url: "https://linkedin.com/in/RamyAkash" },
+    { label: "GitHub", icon: "github", url: "https://github.com/Ramy-Akash" },
+    { label: "Instagram", icon: "instagram", url: "https://instagram.com/Ramy_Akash" },
+  ],
+  footerNote: "Available for freelance work.",
+  ui: {
+    menu: "Toggle menu",
+    language: "العربية",
+    languageLabel: "Switch to Arabic",
+    contactEmail: "Send an Email",
+    contactWhatsapp: "Message on WhatsApp",
+  },
+};
+
+const arabicContent = {
+  metaDescription: "رامي عكاش — مطور واجهات أمامية ومتخصص في تكنولوجيا المعلومات.",
+  heroKicker: "مطور واجهات أمامية · متخصص تقنية معلومات · مستقل",
+  heroName: "رامي عكاش",
+  heroTitle: "مطور مواقع أمامية ومتخصص في تكنولوجيا المعلومات",
+  heroSubtitle: "أبني تطبيقات ويب سريعة وراقية وواجهات مستخدم مخصصة للوكالات الرقمية والمحترفين المستقلين.",
+  heroCtaLabel: "تواصل معي",
+  heroSecondaryCtaLabel: "شاهد أعمالي على GitHub",
+  heroStats: [],
+  aboutSectionLabel: "نبذة عني",
+  aboutHeading: "كود نظيف. تصميم راقٍ",
+  aboutBio: [
+    "أنا مطور واجهات أمامية مقيم في دمشق، سوريا، متخصص في React وJavaScript وتصميم الواجهات المتجاوبة. أجمع بين تطوير الويب الأمامي وبنية شبكات تقنية المعلومات لأقدم دقة جمالية وموثوقية تقنية في كل مشروع.",
+    "من تخطيطات الويب متعددة اللغات إلى لوحات حجوزات معقدة، أركز على تقديم تجارب رقمية نظيفة وقابلة للتوسع وملفتة بصرياً دون تعقيد زائد.",
+  ],
+  servicesSectionLabel: "الخدمات",
+  servicesHeading: "ما أقدمه",
+  servicesIntro: "تطوير واجهات أمامية متخصص يركز على الأداء وتجارب الاستخدام السلسة",
+  services: [
+    { icon: "grid", title: "تطوير React", description: "بناء تطبيقات أحادية الصفحة ومكتبات مكونات قابلة لإعادة الاستخدام باستخدام React وVite." },
+    { icon: "layers", title: "واجهات متجاوبة وتجربة مستخدم", description: "تحويل تصاميم Figma إلى واجهات دقيقة ومتوافقة مع الهواتف باستخدام Tailwind CSS وتنسيقات مخصصة." },
+    { icon: "spark", title: "تحسين المواقع", description: "إعادة تنظيم الأكواد القديمة وإصلاح أخطاء الواجهة وضمان أعلى أداء وتوافق بين المتصفحات." },
+    { icon: "pen", title: "عمليات ودعم تقنية المعلومات", description: "إدارة البنية الشبكية ومعالجة أعطال الأجهزة والبرمجيات وتقديم الدعم التقني لضمان سير العمل." },
+    { icon: "grid", title: "إدارة شبكات كاميرات المراقبة", description: "تصميم وتنفيذ حلول مراقبة متكاملة مع التركيز على الأمان والموثوقية." },
+    { icon: "chat", title: "تعلم سريع وتعاون فعال", description: "التكيف السريع مع التقنيات الجديدة والتعاون مع الفرق المختلفة لتقديم حلول عالية الجودة." },
+  ],
+  portfolioSectionLabel: "الأعمال",
+  portfolioHeading: "أعمال مختارة",
+  portfolioIntro: "تخطيطات ومفاهيم وتجارب رقمية حديثة.",
+  projects: [],
+  testimonialsSectionLabel: "آراء العملاء",
+  testimonialsHeading: "كلمات طيبة",
+  testimonials: [],
+  contactSectionLabel: "تواصل",
+  contactHeading: "لنبنِ حضورك الرقمي.",
+  contactText: "متاح حالياً لمشاريع الواجهات الأمامية المستقلة وإصلاح الأخطاء وتجهيز المحافظ الرقمية.",
+  contactCtaLabel: "راسلني",
+  location: "سوريا · دمشق · العمل عن بعد حول العالم، +963996878554",
+  socialLinks: [
+    { label: "LinkedIn", icon: "linkedin", url: "https://linkedin.com/in/RamyAkash" },
+    { label: "GitHub", icon: "github", url: "https://github.com/Ramy-Akash" },
+    { label: "Instagram", icon: "instagram", url: "https://instagram.com/Ramy_Akash" },
+  ],
+  footerNote: "متاح للعمل المستقل.",
+  ui: {
+    menu: "فتح القائمة",
+    language: "English",
+    languageLabel: "التبديل إلى الإنجليزية",
+    contactEmail: "إرسال بريد إلكتروني",
+    contactWhatsapp: "رسالة عبر واتساب",
+  },
+};
+
+const globalConfig = {
+  siteName: "Ramy Akash",
+  favicon: "/assets/favicon.png",
+  theme: {
+    light: { accent: "#7b9c2c", ink: "#111113", paper: "#FAFAF7", surface: "#111113" },
+    dark: { accent: "#b6d66a", ink: "#f4f4ed", paper: "#151713", surface: "#1A1A1D" },
+  },
+  themeLabels: {
+    en: { light: "Switch to light mode", dark: "Switch to dark mode" },
+    ar: { light: "التبديل إلى الوضع الفاتح", dark: "التبديل إلى الوضع الداكن" },
+  },
+  navigation: {
+    en: [
+      { label: "About", href: "#about" },
+      { label: "Services", href: "#services" },
+      // { label: "Work", href: "#work" },
+      { label: "Contact", href: "#contact" },
+    ],
+    ar: [
+      { label: "نبذة عني", href: "#about" },
+      { label: "الخدمات", href: "#services" },
+      // { label: "الأعمال", href: "#work" },
+      { label: "تواصل", href: "#contact" },
+    ],
+  },
+  shared: {
+    contactEmail: "akash.ramy2003@gmail.com",
+    whatsappUrl: "https://wa.me/963996878554",
+    profilePic: "/assets/Profile-img.jpeg",
+    aboutImage: "/assets/Setup-img.jpg",
+    heroSecondaryUrl: "https://github.com/Ramy-Akash",
+    projects: [
+      { image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1600&auto=format&fit=crop", url: "https://ramy-akash.github.io/CityEventsGuide-SVU-Project/index.html" },
+      { image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1600&auto=format&fit=crop", url: "https://example.com" },
+      { image: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=1600&auto=format&fit=crop", url: "https://example.com" },
+      { image: "https://images.unsplash.com/photo-1447933601403-0c6688de566e?q=80&w=1600&auto=format&fit=crop", url: "https://example.com" },
+      { image: "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?q=80&w=1600&auto=format&fit=crop", url: "https://example.com" },
+      { image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=1600&auto=format&fit=crop", url: "https://example.com" },
+    ],
+  },
+};
+
+export const siteConfig = { ...globalConfig, en: englishContent, ar: arabicContent };

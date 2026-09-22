@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Accent + palette variables are injected at runtime from siteConfig.theme
+   (see App.jsx). Fallbacks below keep the site styled even before JS runs. */
+:root {
+  --accent: 200 162 75;
+  --ink: 17 17 19;
+  --paper: 250 250 247;
+  --surface: 17 17 19;
+}
+
+body {
+  @apply bg-paper text-ink font-sans antialiased;
+  transition: background-color 300ms ease, color 300ms ease;
+}
+
+html[dir="rtl"] {
+  font-family: "Inter", "Tahoma", sans-serif;
+}
+
+::selection {
+  background: rgb(var(--accent) / 0.25);
+}
