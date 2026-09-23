@@ -37,32 +37,39 @@ export default function Header() {
   const toggleLanguage = () => setLanguage(language === "en" ? "ar" : "en");
 
   const scrollToSection = (href) => {
-    const targetId = href.replace(/^#/, "");
+    const targetId = href ? href.replace(/^#/, "") : "";
     if (targetId === "top" || !targetId) {
       window.scrollTo({ top: 0, behavior: "smooth" });
-      if (window.location.hash) {
+      if (window.history && window.history.pushState) {
         window.history.pushState(null, "", window.location.pathname);
       }
       return;
     }
+
     const elem = document.getElementById(targetId);
     if (elem) {
-      const headerOffset = 76;
-      const elemPosition = elem.getBoundingClientRect().top + window.pageYOffset;
+      const headerOffset = 70;
+      const elementTop = elem.getBoundingClientRect().top;
+      const currentScroll = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+      const targetY = elementTop + currentScroll - headerOffset;
+
       window.scrollTo({
-        top: Math.max(0, elemPosition - headerOffset),
+        top: Math.max(0, targetY),
         behavior: "smooth",
       });
-      window.history.pushState(null, "", href);
+
+      if (window.history && window.history.pushState) {
+        window.history.pushState(null, "", href);
+      }
+    } else {
+      window.location.hash = href;
     }
   };
 
   const handleMobileNavClick = (e, href) => {
     e.preventDefault();
     setOpen(false);
-    setTimeout(() => {
-      scrollToSection(href);
-    }, 120);
+    scrollToSection(href);
   };
 
   const handleDesktopNavClick = (e, href) => {
@@ -178,7 +185,7 @@ export default function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.2 }}
             className="overflow-hidden border-b border-ink/5 bg-paper/95 backdrop-blur-md md:hidden"
           >
             <div className="flex flex-col gap-1 px-6 py-4">

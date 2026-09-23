@@ -16,6 +16,10 @@ body {
   transition: background-color 300ms ease, color 300ms ease;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html[dir="rtl"] {
   font-family: "Inter", "Tahoma", sans-serif;
 }
