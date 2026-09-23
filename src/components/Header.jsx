@@ -35,6 +35,41 @@ export default function Header() {
   }, []);
 
   const toggleLanguage = () => setLanguage(language === "en" ? "ar" : "en");
+
+  const scrollToSection = (href) => {
+    const targetId = href.replace(/^#/, "");
+    if (targetId === "top" || !targetId) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (window.location.hash) {
+        window.history.pushState(null, "", window.location.pathname);
+      }
+      return;
+    }
+    const elem = document.getElementById(targetId);
+    if (elem) {
+      const headerOffset = 76;
+      const elemPosition = elem.getBoundingClientRect().top + window.pageYOffset;
+      window.scrollTo({
+        top: Math.max(0, elemPosition - headerOffset),
+        behavior: "smooth",
+      });
+      window.history.pushState(null, "", href);
+    }
+  };
+
+  const handleMobileNavClick = (e, href) => {
+    e.preventDefault();
+    setOpen(false);
+    setTimeout(() => {
+      scrollToSection(href);
+    }, 120);
+  };
+
+  const handleDesktopNavClick = (e, href) => {
+    e.preventDefault();
+    scrollToSection(href);
+  };
+
   const controls = (
     <div className="flex items-center gap-2">
       <ThemeToggle theme={theme} setTheme={setTheme} label={themeLabel} />
@@ -56,14 +91,26 @@ export default function Header() {
       }`}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 lg:px-8">
-        <a href="#top" className="font-display text-xl tracking-tight">
+        <a
+          href="#top"
+          onClick={(e) => {
+            if (open) setOpen(false);
+            handleDesktopNavClick(e, "#top");
+          }}
+          className="font-display text-xl tracking-tight"
+        >
           {siteConfig.siteName}
           <span className="text-accent">.</span>
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">
           {navigation.map((item) => (
-            <a key={item.href} href={item.href} className="text-sm text-ink/60 transition-colors hover:text-ink">
+            <a
+              key={item.href}
+              href={item.href}
+              onClick={(e) => handleDesktopNavClick(e, item.href)}
+              className="text-sm text-ink/60 transition-colors hover:text-ink"
+            >
               {item.label}
             </a>
           ))}
@@ -136,13 +183,19 @@ export default function Header() {
           >
             <div className="flex flex-col gap-1 px-6 py-4">
               {navigation.map((item) => (
-                <a key={item.href} href={item.href} onClick={() => setOpen(false)} className="py-3 font-display text-2xl text-ink/80">
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={(e) => handleMobileNavClick(e, item.href)}
+                  className="py-3 font-display text-2xl text-ink/80 transition-colors hover:text-accent"
+                >
                   {item.label}
                 </a>
               ))}
               <div className="mt-3 grid grid-cols-2 gap-2">
                 <a
                   href={`mailto:${siteConfig.shared.contactEmail}`}
+                  onClick={() => setOpen(false)}
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-3 py-3 text-center text-xs text-paper"
                 >
                   <Icon name="mail" className="h-4 w-4" />
@@ -150,6 +203,7 @@ export default function Header() {
                 </a>
                 <a
                   href={siteConfig.shared.whatsappUrl}
+                  onClick={() => setOpen(false)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/15 px-3 py-3 text-center text-xs text-ink transition-colors hover:border-accent hover:text-accent"

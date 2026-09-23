@@ -9,7 +9,7 @@ export default function Services() {
   if (!services?.length) return null;
 
   return (
-    <section id="services" className="bg-ink/[0.02]">
+    <section id="services" className="bg-ink/[0.02] scroll-mt-20 md:scroll-mt-24">
       <div className="mx-auto max-w-6xl px-6 py-24 md:py-32 lg:px-8">
         <SectionHeading number="02" heading={servicesSectionLabel} intro={servicesIntro} />
         <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

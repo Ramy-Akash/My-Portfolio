@@ -17,7 +17,7 @@ export default function Contact() {
   const { contactEmail } = shared;
 
   return (
-    <footer id="contact" className="border-t border-ink/5">
+    <footer id="contact" className="border-t border-ink/5 scroll-mt-20 md:scroll-mt-24">
       <div className="mx-auto max-w-6xl px-6 py-24 md:py-32 lg:px-8">
         <SectionHeading number="03" heading={contactSectionLabel} intro={contactHeading} />
         {contactText && (

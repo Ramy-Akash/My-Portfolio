@@ -58,7 +58,7 @@ export default function PortfolioGrid() {
   if (!projects?.length) return null;
 
   return (
-    <section id="work" className="mx-auto max-w-6xl px-6 py-24 md:py-32 lg:px-8">
+    <section id="work" className="mx-auto max-w-6xl px-6 py-24 md:py-32 lg:px-8 scroll-mt-20 md:scroll-mt-24">
       <SectionHeading number="03" heading={portfolioSectionLabel} intro={portfolioIntro} />
       <div className="mt-16 grid gap-10 sm:grid-cols-2 md:gap-8">
         {localizedProjects.map((project, i) => (

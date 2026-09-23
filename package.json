@@ -1,5 +1,6 @@
 {
-  "name": "aura-portfolio-template",
+  "name": "ramy-akash-portfolio",
+  "description": "Ramy Akash Portfolio",
   "private": true,
   "version": "1.0.0",
   "type": "module",

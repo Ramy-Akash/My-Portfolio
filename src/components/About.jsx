@@ -10,7 +10,7 @@ export default function About() {
   if (!aboutBio?.length) return null;
 
   return (
-    <section id="about" className="mx-auto max-w-6xl px-6 py-24 md:py-32 lg:px-8">
+    <section id="about" className="mx-auto max-w-6xl px-6 py-24 md:py-32 lg:px-8 scroll-mt-20 md:scroll-mt-24">
       <SectionHeading number="01" heading={aboutSectionLabel} intro={aboutHeading} />
       <div className="mt-14 grid items-start gap-12 md:grid-cols-[1fr_1.1fr] md:gap-16">
         <Reveal>

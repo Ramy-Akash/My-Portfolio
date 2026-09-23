@@ -23,7 +23,7 @@ export default function Hero() {
   const { profilePic, contactEmail, heroSecondaryUrl } = shared;
 
   return (
-    <section id="top" className="relative overflow-hidden">
+    <section id="top" className="relative overflow-hidden scroll-mt-20 md:scroll-mt-24">
       {/* soft accent wash */}
       <div className="pointer-events-none absolute -top-40 right-[-10%] h-[32rem] w-[32rem] rounded-full bg-accent/10 blur-3xl" />
 

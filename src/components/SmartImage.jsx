@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 /**
- * SmartImage — every image in the template renders through this component.
+ * SmartImage — renders portfolio images with placeholder fallback.
  * - Accepts local paths ("/assets/photo.jpg") or full https URLs.
  * - object-cover inside a fixed-aspect container, so ANY replacement image
  *   of ANY dimensions looks correct instantly.

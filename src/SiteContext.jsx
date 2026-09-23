@@ -3,18 +3,18 @@ import { siteConfig } from "./siteConfig.js";
 
 const SiteContext = createContext(null);
 
-function readPreference(key, allowed, fallback) {
-  const value = window.localStorage.getItem(key);
+function readPreference(key, fallbackKey, allowed, fallback) {
+  const value = window.localStorage.getItem(key) || (fallbackKey ? window.localStorage.getItem(fallbackKey) : null);
   return allowed.includes(value) ? value : fallback;
 }
 
 export function SiteProvider({ children }) {
-  const [language, setLanguage] = useState(() => readPreference("aura-language", ["en", "ar"], "en"));
-  const [theme, setTheme] = useState(() => readPreference("aura-theme", ["light", "dark"], "dark"));
+  const [language, setLanguage] = useState(() => readPreference("ramy-akash-language", "aura-language", ["en", "ar"], "en"));
+  const [theme, setTheme] = useState(() => readPreference("ramy-akash-theme", "aura-theme", ["light", "dark"], "dark"));
   const content = siteConfig[language];
 
   useEffect(() => {
-    window.localStorage.setItem("aura-language", language);
+    window.localStorage.setItem("ramy-akash-language", language);
     document.documentElement.lang = language;
     document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
   }, [language]);
@@ -29,13 +29,17 @@ export function SiteProvider({ children }) {
       root.style.setProperty(`--${name}`, `${(number >> 16) & 255} ${(number >> 8) & 255} ${number & 255}`);
     });
     root.dataset.theme = theme;
-    window.localStorage.setItem("aura-theme", theme);
+    window.localStorage.setItem("ramy-akash-theme", theme);
   }, [theme]);
 
   useEffect(() => {
     document.title = `${siteConfig.siteName} — ${content.heroTitle}`;
     const meta = document.querySelector('meta[name="description"]');
     if (meta) meta.setAttribute("content", content.metaDescription);
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute("content", `${siteConfig.siteName} — ${content.heroTitle}`);
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute("content", content.metaDescription);
     if (siteConfig.favicon) {
       let link = document.querySelector("link[rel~='icon']");
       if (!link) {
