@@ -40,8 +40,10 @@ export default function Header() {
     const targetId = href ? href.replace(/^#/, "") : "";
     if (targetId === "top" || !targetId) {
       window.scrollTo({ top: 0, behavior: "smooth" });
-      if (window.history && window.history.pushState) {
-        window.history.pushState(null, "", window.location.pathname);
+      if (window.location.hash) {
+        try {
+          window.history.replaceState(null, "", window.location.pathname + window.location.search);
+        } catch (_) {}
       }
       return;
     }
@@ -49,17 +51,32 @@ export default function Header() {
     const elem = document.getElementById(targetId);
     if (elem) {
       const headerOffset = 70;
-      const elementTop = elem.getBoundingClientRect().top;
-      const currentScroll = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
-      const targetY = elementTop + currentScroll - headerOffset;
+      const bodyTop = document.body.getBoundingClientRect().top;
+      const elemTop = elem.getBoundingClientRect().top;
+      const targetY = Math.max(0, elemTop - bodyTop - headerOffset);
 
+      // 1. Smooth scroll to calculated offset
       window.scrollTo({
-        top: Math.max(0, targetY),
+        top: targetY,
         behavior: "smooth",
       });
 
-      if (window.history && window.history.pushState) {
-        window.history.pushState(null, "", href);
+      // 2. Invoke scrollIntoView as secondary browser mechanism
+      try {
+        elem.scrollIntoView({ behavior: "smooth", block: "start" });
+      } catch (_) {}
+
+      // 3. Trigger native location.hash navigation so the browser physically navigates
+      // (the exact mechanism that happens when pressing Enter on the URL bar)
+      if (window.location.hash === `#${targetId}`) {
+        try {
+          window.history.replaceState(null, "", window.location.pathname + window.location.search);
+        } catch (_) {}
+        setTimeout(() => {
+          window.location.hash = targetId;
+        }, 10);
+      } else {
+        window.location.hash = targetId;
       }
     } else {
       window.location.hash = href;
@@ -70,6 +87,17 @@ export default function Header() {
     e.preventDefault();
     setOpen(false);
     scrollToSection(href);
+    setTimeout(() => {
+      const targetId = href ? href.replace(/^#/, "") : "";
+      const elem = document.getElementById(targetId);
+      if (elem) {
+        const headerOffset = 70;
+        const bodyTop = document.body.getBoundingClientRect().top;
+        const elemTop = elem.getBoundingClientRect().top;
+        const targetY = Math.max(0, elemTop - bodyTop - headerOffset);
+        window.scrollTo({ top: targetY, behavior: "smooth" });
+      }
+    }, 80);
   };
 
   const handleDesktopNavClick = (e, href) => {
@@ -194,7 +222,7 @@ export default function Header() {
                   key={item.href}
                   href={item.href}
                   onClick={(e) => handleMobileNavClick(e, item.href)}
-                  className="py-3 font-display text-2xl text-ink/80 transition-colors hover:text-accent"
+                  className="cursor-pointer select-none py-3 font-display text-2xl text-ink/80 touch-manipulation transition-colors hover:text-accent"
                 >
                   {item.label}
                 </a>
